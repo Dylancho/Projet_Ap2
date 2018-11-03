@@ -1,0 +1,26 @@
+import random
+ 
+def fabrication_de_labyrinthe(width = 16, height = 8):
+    cell = [[0] * width + [1] for i in range(height)] + [[1] * (width + 1)]
+    verticale = [["|  "] * width + ['|'] for i in range(height)] + [[]]
+    horizontale = [["+--"] * width + ['+'] for i in range(height + 1)]
+ 
+    def pas(x, y):
+        cell[y][x] = 1
+ 
+        liste = [(x - 1, y), (x, y + 1), (x + 1, y), (x, y - 1)]
+        random.shuffle(liste)
+        for (x2, y2) in liste:
+            # check si ca ne met pas une erreur index
+            if cell[y2][x2]:
+                continue
+            
+            if x2 == x: horizontale[max(y, y2)][x] = "+  "
+            if y2 == y: verticale[y][max(x, x2)] = "   "
+            pas(x2, y2)
+ 
+    pas(random.randrange(width), random.randrange(height))
+    for (i, j) in zip(horizontale, verticale):
+        print(''.join(i + ['\n'] + j))
+ 
+fabrication_de_labyrinthe()
